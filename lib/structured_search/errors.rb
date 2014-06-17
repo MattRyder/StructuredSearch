@@ -1,6 +1,6 @@
 module StructuredSearch
 
-  class LexerError < StandardError
+  class LexicalError < StandardError
   end
 
   class SyntaxError < StandardError
