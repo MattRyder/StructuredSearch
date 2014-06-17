@@ -5,7 +5,7 @@ require 'structured_search/patterns'
 describe "Lexer" do
 
   before (:each) do
-    @input = "SELECT * FROM Google;"
+    @input = "SELECT * FROM 'Google';"
     @lexer = StructuredSearch::Lexer.new(@input)
   end
 
@@ -37,6 +37,13 @@ describe "Lexer" do
   it "should return the correct position in the offset" do
     @lexer.scan
     expect(@lexer.lexer_offset).to eq("SELECT".size)
+  end
+
+  it "should extract every token in the input" do
+    tokens = []
+    while @lexer.scan(true) do
+      tokens.push @lexer.scan
+    end
   end
 
 end

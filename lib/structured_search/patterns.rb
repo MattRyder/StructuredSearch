@@ -3,10 +3,16 @@ module StructuredSearch
   class Lexer
     
     # SQL reserved words
-    RESERVED = %w{ SELECT FROM WHERE ALL AND ASC BOTH }
+    RESERVED = %w{
+      SELECT ALL FROM WHERE ASC
+      }
 
     # pattern hash of token keys and regex values
     PATTERNS = [
+
+      [:WHITESPACE, /[\r\v\f\t ]+/],
+      [:TERMINATOR, /[\r\n]/],
+
       # intern reserved words and their patterns
       *RESERVED.map { |rw| [rw.intern, /#{rw}(?=[^A-z0-9_])/] },
       
@@ -34,6 +40,6 @@ module StructuredSearch
       [:CIRCUMFLEX, /\^/],
       [:UNDERSCORE, /_/ ],
       [:PIPE,       /\|/]
-    ].map { |pattern| [pattern[0], /#{pattern[1]}/, pattern[2]] }
+    ].map { |pattern| [pattern[0], /\G#{pattern[1]}/m, pattern[2]] }
   end
 end

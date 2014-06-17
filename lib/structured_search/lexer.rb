@@ -1,4 +1,5 @@
 require 'structured_search/token'
+require 'structured_search/errors'
 
 module StructuredSearch
   
@@ -26,7 +27,9 @@ module StructuredSearch
       PATTERNS.each do |pattern|
         match = pattern[1].match(@input, @lexer_offset)
         if match
-          token_data = { token: match[0], lexeme: match[2], line: @line, column: @column }
+          token_data = { token:  pattern[0],
+                         lexeme: pattern[2] ? pattern[2].call(match) : '',
+                         line: @line, column: @column }
           token = Token.new(token_data)
 
           # increment line and col position if a read op:
@@ -44,7 +47,11 @@ module StructuredSearch
       end
 
       # have we underrun the input due to lex error?:
-      raise LexicalError if @lexer_offset < @input.size
+      if @lexer_offset < @input.size
+        p "offset @ #{@lexer_offset} for string of size: #{@input.size}"
+        #raise StructuredSearch::LexicalError
+      end
+
       nil
     end
 
