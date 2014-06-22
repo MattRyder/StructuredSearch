@@ -5,7 +5,8 @@ module StructuredSearch
     # SELECT reserved word node
     class Select < BaseNode
 
-      def initialise
+      def initialize(*argv)
+        super *argv
       end
 
     end

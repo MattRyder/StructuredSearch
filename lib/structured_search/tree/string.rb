@@ -5,7 +5,7 @@ module StructuredSearch
     # Represents a string node
     class String < BaseNode
 
-      def initialise
+      def initialize
       end
 
     end
