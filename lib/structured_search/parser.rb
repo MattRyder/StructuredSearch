@@ -49,7 +49,15 @@ module StructuredSearch
     end
 
     def new_from
-      Tree::From.new(basic_options)
+      source_tokens = [ :STRING ]
+      from_tok = Tree::From.new(basic_options)
+
+      # read in all the derived columns - search sources:
+      while source_tokens.include? peek_token.token
+        src_token = read_token
+        from_tok.sources[src_token.lexeme.to_sym] = src_token.lexeme
+      end
+      from_tok
     end
 
     def new_string

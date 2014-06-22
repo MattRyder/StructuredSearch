@@ -28,10 +28,10 @@ describe "Parser" do
     expect(token).to be_a(StructuredSearch::Tree::Select)
   end
 
-  # right now (SELECT, ASTERISK, FROM, STRING)
+  # right now (SELECT, ASTERISK, FROM)
   it "should parse until the end of input" do
     @parser.parse_to_end
-    expect(@parser.nodes.count).to eq(4)
+    expect(@parser.nodes.count).to eq(3)
   end
 
 end

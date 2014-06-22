@@ -42,14 +42,21 @@ module StructuredSearch
             @column += tok_length - (match[0].rindex("\n") || 0)
           end
 
-          return token
+          # clear any whitespace
+          if pattern[0] == :WHITESPACE
+            @lexer_offset += match[0].size
+            return scan(is_peek)
+          else
+            return token
+          end
+
         end
       end
 
       # have we underrun the input due to lex error?:
       if @lexer_offset < @input.size
         p "offset @ #{@lexer_offset} for string of size: #{@input.size}"
-        #raise StructuredSearch::LexicalError
+        raise StructuredSearch::LexicalError
       end
 
       nil

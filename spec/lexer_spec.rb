@@ -42,7 +42,7 @@ describe "Lexer" do
   it "should extract every token in the input" do
     tokens = []
     while @lexer.scan(true); tokens.push @lexer.scan; end
-    expect(tokens.size).to eq(8)
+    expect(tokens.size).to eq(5)
   end
 
 end
