@@ -41,7 +41,31 @@ module StructuredSearch
     end
 
     def new_select
-      Tree::Select.new(basic_options)
+      quant_list = [ :ALL, :DISTINCT ]
+      select_list = [ :ASTERISK, :STRING ]
+      select_options = basic_options
+
+      # handle an optional set quantifier (ALL or DISTINCT)
+      if quant_list.include? peek_token.token
+        select_options.merge!({ quantifier: read_token.token })
+      end
+
+      select_tok = Tree::Select.new(select_options)
+
+      # handle a select list (ASTERISK or search terms)
+      if select_list.include? peek_token.token
+
+        # read in all search terms from the query:
+        while peek_token.token == :STRING
+          select_tok.add_search_term(read_token.lexeme)
+          read_token if peek_token.token == :COMMA
+        end
+
+      else
+        raise LexicalError "No valid select list given (Line: #{basic_options.line}, Column: #{basic_options.column})"
+      end
+      
+      select_tok
     end
 
     def new_asterisk

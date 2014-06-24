@@ -6,7 +6,7 @@ require 'structured_search/patterns'
 describe "Parser" do
 
   before (:each) do
-    lexer = StructuredSearch::Lexer.new("SELECT * FROM 'RubyDoc';")
+    lexer = StructuredSearch::Lexer.new("SELECT 'Array', 'Hash' FROM 'RubyDoc';")
     @parser = StructuredSearch::Parser.new(lexer)
   end
 
@@ -28,10 +28,21 @@ describe "Parser" do
     expect(token).to be_a(StructuredSearch::Tree::Select)
   end
 
-  # right now (SELECT, ASTERISK, FROM)
+  # SELECT et FROM
   it "should parse until the end of input" do
     @parser.parse_to_end
-    expect(@parser.nodes.count).to eq(3)
+    expect(@parser.nodes.count).to eq(2)
+  end
+
+  it "should intern the correct token attributes" do
+    @parser.parse_to_end
+    sel_node = @parser.nodes[0]
+    # lets ensure that it's a select before using it
+    expect(sel_node).to be_a(StructuredSearch::Tree::Select)
+
+    # set quantifier should be ALL, as none is given
+    expect(sel_node.set_quantifier).to eq(:ALL)
+    expect(sel_node.search_terms).to contain_exactly('Array', 'Hash')
   end
 
 end

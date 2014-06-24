@@ -4,7 +4,7 @@ module StructuredSearch
     
     # SQL reserved words
     RESERVED = %w{
-      SELECT ALL FROM WHERE ASC
+      SELECT ALL DISTINCT FROM WHERE ASC DESC
       }
 
     # pattern hash of token keys and regex values
