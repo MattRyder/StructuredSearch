@@ -87,7 +87,6 @@ private
     def new_statement
       @statements.push Tree::Statement.new(@nodes)
       @nodes = [] # reset node array
-      byebug
     end
     
   end

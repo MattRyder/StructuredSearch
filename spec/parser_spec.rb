@@ -32,7 +32,7 @@ describe "Parser" do
   it "should parse until the end of input" do
     @parser.parse_to_end
     expect(@parser.statements.count).to eq(1)
-    expect(@parser.statements[0].nodes.count).to eq(2)
+    expect(@parser.statements[0].count).to eq(2)
   end
 
   it "should intern the correct token attributes" do
