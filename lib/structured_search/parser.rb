@@ -3,11 +3,11 @@ module StructuredSearch
   class Parser
 
     # stores all parse tree nodes
-    attr_reader :nodes
+    attr_reader :statements
 
     def initialize(lexer)
       @lexer = lexer
-      @nodes = []
+      @nodes, @statements = [], []
     end
 
     # read the next token in the stream
@@ -23,7 +23,7 @@ module StructuredSearch
     def parse_to_end
       while peek_token
         new_node = parse
-        nodes << new_node if new_node
+        @nodes << new_node if new_node
       end
     end
 
@@ -31,14 +31,18 @@ module StructuredSearch
       @current_token = read_token
       
       case @current_token.token
-      when :WHITESPACE; when :SEMICOLON; return
-      else; send "new_#{@current_token.token.downcase}"
+        when :SEMICOLON
+          new_statement
+        else
+          send "new_#{@current_token.token.downcase}"
       end
     end
 
     def basic_options
       { line: @current_token.line, column: @current_token.column }
     end
+
+private
 
     def new_select
       quant_list = [ :ALL, :DISTINCT ]
@@ -68,10 +72,6 @@ module StructuredSearch
       select_tok
     end
 
-    def new_asterisk
-      Tree::Asterisk.new(basic_options)
-    end
-
     def new_from
       source_tokens = [ :STRING ]
       from_tok = Tree::From.new(basic_options)
@@ -84,11 +84,11 @@ module StructuredSearch
       from_tok
     end
 
-    def new_string
-      Tree::String.new(basic_options)
+    def new_statement
+      @statements.push Tree::Statement.new(@nodes)
+      @nodes = [] # reset node array
+      byebug
     end
-
-
     
   end
 end
