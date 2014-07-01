@@ -2,7 +2,7 @@ module StructuredSearch
   module Tree
 
     class BaseNode
-      attr_accessor :line, :column
+      attr_accessor :line, :column, :type
 
       def initialize(topts = {})
         topts.each { |key, val| send "#{key}=", val }

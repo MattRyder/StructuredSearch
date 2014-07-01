@@ -9,5 +9,7 @@ module StructuredSearch
 
   class << self
 
+
+
   end
 end

@@ -2,7 +2,7 @@ require 'structured_search/token'
 require 'structured_search/errors'
 
 module StructuredSearch
-  
+
   class Lexer
     attr_accessor :input, :column, :line, :lexer_offset
 
@@ -55,8 +55,7 @@ module StructuredSearch
 
       # have we underrun the input due to lex error?:
       if @lexer_offset < @input.size
-        p "offset @ #{@lexer_offset} for string of size: #{@input.size}"
-        raise StructuredSearch::LexicalError
+        raise LexicalError, "Unexpected character \"#{@input[@lexer_offset+1]}\"  at (Line #{@line}, Column #{@column})"
       end
 
       nil

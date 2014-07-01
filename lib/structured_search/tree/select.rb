@@ -10,13 +10,19 @@ module StructuredSearch
       # Set to ALL by default
       attr_accessor :set_quantifier, :search_terms
 
+      def set_quantifier=(quantifier)
+        if [:ALL, :DISTINCT].include? quantifier
+          @set_quantifier = quantifier
+        end
+      end
+
       def add_search_term(term)
         @search_terms.push term
       end
 
       def initialize(*argv)
         @search_terms = []
-        @set_quantifier = Hash[*argv.flatten][:quantifier] ||= :ALL
+        @set_quantifier = :ALL
         super *argv
       end
 
