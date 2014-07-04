@@ -86,7 +86,7 @@ private
         src_token = read_token
         # check if the provider is registered in the given list:
         if provider_exists? src_token.lexeme.downcase
-          from_tok.sources[src_token.lexeme] = @providers[src_token.lexeme.downcase]
+          from_tok.sources[src_token.lexeme] = @providers[src_token.lexeme.downcase.to_sym]
         else raise UnregisteredProviderError, "#{src_token.lexeme} is not a registered provider"
         end
       end

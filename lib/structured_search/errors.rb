@@ -11,4 +11,8 @@ module StructuredSearch
   class UnregisteredProviderError < StandardError
   end
 
+  # raised when a provider does not have a method required
+  # by StructuredSearch (e.g. doesn't respond to search() etc.)
+  class ProviderNotAvailableError < StandardError
+  end
 end
