@@ -1,10 +1,16 @@
 module StructuredSearch
 
+  # Parses a token stream, returning an array of StructuredSearch::Statement
   class Parser
 
     # stores all parse tree nodes
     attr_reader :statements, :providers
 
+    # Creates a new instance of the Parser, taking a Lexer and a hash of
+    # providers (An identifier and class that contains the search method)
+    # Params:
+    # +lexer+:: A StructuredSearch::Lexer object
+    # +providers+:: A Hash of provider names and their classes 
     def initialize(lexer, providers)
       @lexer = lexer
       @providers = Hash.new
@@ -13,16 +19,18 @@ module StructuredSearch
       @nodes, @statements = [], []
     end
 
-    # read the next token in the stream
+    # Reads the next token in the stream
     def read_token
       @lexer.scan
     end
 
-    # peek at the next token in stream
+    # Peeks at the next token in stream
     def peek_token
       @lexer.scan(true)
     end
 
+    # Parses the token stream into statements until there
+    # are no more tokens left
     def parse_to_end
       while peek_token
         new_node = parse
@@ -33,6 +41,8 @@ module StructuredSearch
       new_statement if @nodes.length > 0
     end
 
+    # Parses the next token in the token stream into an AST node
+    # Returns an AST node
     def parse
       @current_token = read_token
       
@@ -44,12 +54,15 @@ module StructuredSearch
       end
     end
 
+    # Basic options given to BaseNode when creating a new instance
+    # of a node, including the line, column and type
     def basic_options
       { line: @current_token.line, column: @current_token.column, type: @current_token.token }
     end
 
 private
 
+    # Creates a new Tree::Select
     def new_select
       quant_list = [ :ALL, :DISTINCT ]
       select_list = [ :ASTERISK, :STRING ]
@@ -77,6 +90,7 @@ private
       select_tok
     end
 
+    # Creates a new Tree::From
     def new_from
       source_tokens = [ :STRING ]
       from_tok = Tree::From.new(basic_options)
@@ -98,19 +112,20 @@ private
       from_tok
     end
 
+    # Creates a new Tree::Statement
     def new_statement
       @statements.push Tree::Statement.new(@nodes)
       @nodes = [] # reset node array
       nil
     end
 
-    ##
     # Checks whether a search provider class exists
     def provider_exists?(source)
       @providers.has_key? source.to_sym
     end
 
-
+    # Returns a string that will inform the user where an error
+    # has occurred.
     def error_location
       "Line #{basic_options[:line]}, Column #{basic_options[:column]}"
     end

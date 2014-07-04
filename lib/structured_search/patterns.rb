@@ -2,12 +2,12 @@ module StructuredSearch
 
   class Lexer
     
-    # SQL reserved words
+    # SQL reserved words list
     RESERVED = %w{
       SELECT ALL DISTINCT FROM WHERE ASC DESC
       }
 
-    # pattern hash of token keys and regex values
+    # Pattern hash of token keys and regex values
     PATTERNS = [
 
       [:WHITESPACE, /[\r\v\f\t ]+/],
@@ -16,7 +16,7 @@ module StructuredSearch
       # intern reserved words and their patterns
       *RESERVED.map { |rw| [rw.intern, /#{rw}(?=[^A-z0-9_])/] },
       
-      # match sgl/dbl quoted strings
+      # match single / double quoted strings
       [:STRING, /(['"])(\\n|\\.|((?!\1)(?!\\)|.)*?((?!\1)(?!\\).)?)\1/, -> match { match[2] } ],
       [:L_PAREN,    /\(/],
       [:R_PAREN,    /\)/],

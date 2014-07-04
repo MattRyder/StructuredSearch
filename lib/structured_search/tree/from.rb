@@ -1,7 +1,6 @@
 module StructuredSearch
   module Tree
 
-    ##
     # FROM reserved word node
     class From < BaseNode
 
@@ -12,6 +11,7 @@ module StructuredSearch
       # and a class reference to what generates the query
       attr_accessor :sources
 
+      #:nodoc:
       def initialize(*argv)
         @sources = {}
         super *argv

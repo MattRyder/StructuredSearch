@@ -3,19 +3,32 @@ require 'structured_search/errors'
 
 module StructuredSearch
 
+  # Converts the input into a token stream, that can be worked 
+  # by the syntax parser.
   class Lexer
+
+    # +input+:: Input string to parse
+    # +column+:: Current column position
+    # +line+:: Current position in the line
+    # +lexer_offset+:: Current character position in the input string
     attr_accessor :input, :column, :line, :lexer_offset
 
+    # Returns the current state of the lexer, by way of input, 
+    # current line and column.
     def state
       { input: input, column: column, line: line }
     end
 
+    # Sets the state of the lexer
     def state=(state)
       @input = state[:input]
       @column = state[:column]
       @line = state[:line]
     end
 
+    # Creates a new instance of the Lexer.
+    # Params:
+    # +input+:: The SQL input that will be parsed.
     def initialize(input)
       @input = input
       @column = 1
@@ -23,6 +36,14 @@ module StructuredSearch
       @lexer_offset = 0
     end
 
+    # Scans the input, matching each token that appears and 
+    # returns the token. Supports both read and peek operations
+    # determined by the state of the peek flag.
+    # Params:
+    # +is_peek+:: Whether the lexer will consume the token, or 
+    #             remain in it's current position (false by default)
+    # Returns:
+    # +token+:: A StructuredSeach::Token is returned to the caller.
     def scan(is_peek = false)
       PATTERNS.each do |pattern|
         match = pattern[1].match(@input, @lexer_offset)
