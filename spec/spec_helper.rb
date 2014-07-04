@@ -1,6 +1,7 @@
 require 'rubygems'
 require 'spork'
 require 'byebug'
+require 'coveralls'
 
 Spork.prefork do
   # This file is copied to spec/ when you run 'rails generate rspec:install'
@@ -12,6 +13,9 @@ Spork.prefork do
   Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
   ActiveRecord::Migration.maintain_test_schema!
   
+  # boot up coveralls for code coverage:
+  Coveralls.wear!
+
   RSpec.configure do |config|
     config.infer_spec_type_from_file_location!
   end

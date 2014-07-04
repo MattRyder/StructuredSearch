@@ -1,6 +1,4 @@
-# Structured Search     [![Build Status](https://travis-ci.org/MattRyder/StructuredSearch.svg?branch=master)](https://travis-ci.org/MattRyder/StructuredSearch)
----
-
+# Structured Search     [![Build Status](https://travis-ci.org/MattRyder/StructuredSearch.svg?branch=master)](https://travis-ci.org/MattRyder/StructuredSearch) [![Coverage Status](https://coveralls.io/repos/MattRyder/StructuredSearch/badge.png)](https://coveralls.io/r/MattRyder/StructuredSearch)
 StructuredSearch is a Rubygem for querying search engines, APIs and other information providers by using SQL statements (Yeah, just like the ones you use in mySQL! ...kinda)
 
   - Supports multiple search terms with multiple search providers
