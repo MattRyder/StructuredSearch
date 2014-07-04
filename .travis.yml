@@ -1,4 +1,5 @@
 language: ruby
 rvm:
   - ruby-head
-  - jruby-head
+  - 2.0.0
+  - rbx
