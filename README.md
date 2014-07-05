@@ -12,9 +12,32 @@ or in your Gemfile:
     
     gem 'structured_search'
     
+## How to use StructuredSearch
+There are two path you can go by, the easiest method is to just pass your input and your list of providers into the `evaluate` method:
 
+```ruby
+    require 'structured_search'
+
+    # a hash of your providers, the key should be the same case as
+    # seen in your input, and the values are classes that contain the
+    # class method 'search'.
+    providers = {
+      :Google => MySearchProviders::GoogleSearchClass,
+      :Github => GithubApi::StructuredSearchProviderClass
+    }
+
+    # the SQL string to evaluate
+    search_query = "SELECT 'Matz', 'Ruby' FROM 'Google';"
+
+    results = StructuredSearch.evaluate(search_query, providers)
+
+    # and read your results:
+    # they're contained in an array (each statement), addressed by
+    # the provider (i.e. Google) and then by search term
+    ruby_google_results = results[0]['Google']['Ruby']
+```
 ## License
 MIT
 
 ### About StructuredSearch
-Developed by [MattRyder](http://mattryder.co.uk), please email/tweet me if you see anything missing or erroneous about StructuredSearch.
+Developed by [Matt Ryder](http://mattryder.co.uk), please email/tweet me if you see anything missing or erroneous about StructuredSearch.
