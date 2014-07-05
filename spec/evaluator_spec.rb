@@ -9,9 +9,8 @@ describe "Evaluator" do
 
     providers = { Google:  TestSearchProviders::GoogleSearchProvider }
     query = "SELECT 'Ruby', 'Montreal' FROM 'Google'"
-    lexer = StructuredSearch::Lexer.new(query)
     
-    @parser = StructuredSearch::Parser.new(lexer, providers)
+    @parser = StructuredSearch::Parser.new(query, providers)
     @parser.parse_to_end
     
     @evaluator = StructuredSearch::Evaluator.new(@parser.statements)
@@ -25,8 +24,8 @@ describe "Evaluator" do
   end
 
   it "should throw an error because ErroneousSearchProvider#search doesn't exist" do
-    lexer = StructuredSearch::Lexer.new("SELECT 'failure' FROM 'ErrorProvider'")
-    parser = StructuredSearch::Parser.new(lexer, {
+    query = "SELECT 'failure' FROM 'ErrorProvider'"
+    parser = StructuredSearch::Parser.new(query, {
       ErrorProvider: TestSearchProviders::ErroneousSearchProvider
     })
     parser.parse_to_end

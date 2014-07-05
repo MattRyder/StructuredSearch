@@ -11,8 +11,8 @@ module StructuredSearch
     # Params:
     # +lexer+:: A StructuredSearch::Lexer object
     # +providers+:: A Hash of provider names and their classes 
-    def initialize(lexer, providers)
-      @lexer = lexer
+    def initialize(input, providers)
+      @lexer = StructuredSearch::Lexer.new(input)
       @providers = Hash.new
       providers.each { |k,v| @providers[k.downcase] = v }
       

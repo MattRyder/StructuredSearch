@@ -6,9 +6,9 @@ require 'structured_search/patterns'
 describe "Parser" do
 
   before (:each) do
+    input = "SELECT 'Array', 'Hash' FROM 'Google';" 
     providers = { Google:  TestSearchProviders::GoogleSearchProvider }
-    lexer = StructuredSearch::Lexer.new("SELECT 'Array', 'Hash' FROM 'Google';")
-    @parser = StructuredSearch::Parser.new(lexer, providers)
+    @parser = StructuredSearch::Parser.new(input, providers)
   end
 
   it "should create an object of correct type" do
